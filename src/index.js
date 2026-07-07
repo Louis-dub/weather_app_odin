@@ -5,7 +5,7 @@ const key = "SC4BWVDFLWVH4HLHVLDN8GU3C";
 
 // Add Logo
 document.addEventListener("DOMContentLoaded", () => {
-    const logoNav = document.getElementById("logo");
+    const logoNav = document.getElementById("img-logo");
 
     if (logoNav)
         logoNav.src = logo;

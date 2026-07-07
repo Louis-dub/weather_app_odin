@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Caudex&family=RocknRoll+One&display=swap');
 
 /* Background */
 canvas {
@@ -8,4 +9,74 @@ canvas {
     height: 100%;
     background: #05070f;
     z-index: -1;
+}
+
+/* App */
+body {
+    font-family: "RocknRoll One";
+    color: white;
+}
+
+/* Header */
+svg {
+    width: 40px;
+    height: 40px;
+    fill: #05070f;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+header img {
+    border-radius: 50%;
+    width: 100px;
+}
+
+header h1 {
+    font-size: 3.5rem;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.search input {
+    color: #05070f;
+    font-family: "RocknRoll One";
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 2rem;
+    width: 500px;
+}
+
+.search button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+} 
+
+.search button:hover {
+    transform: scale(1.2);
+}
+
+.search button:active {
+    transform: scale(0.9);
 }
