@@ -2,6 +2,29 @@ import './styles.css'
 import logo from './images/logo_sky_log.png'
 
 const key = "SC4BWVDFLWVH4HLHVLDN8GU3C";
+const btnSearch = document.getElementById("btn-search")
+const input = document.getElementById("input-search");
+
+async function getData() {
+    if (input.value.length === 0) {
+        console.log("Enter a city name");
+        return;
+    }
+    try {
+        const location = encodeURIComponent(input.value);
+        const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${input.value}?key=${key}`);
+        const data = await response.json();
+        console.log(data);
+        input.value = "";
+    } catch (error) {
+        console.log("That city doesn't exist");
+    }
+}
+
+btnSearch.addEventListener("click", getData);
+input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") getData();
+})
 
 // Add Logo
 document.addEventListener("DOMContentLoaded", () => {
