@@ -5,6 +5,38 @@ const key = "SC4BWVDFLWVH4HLHVLDN8GU3C";
 const btnSearch = document.getElementById("btn-search")
 const input = document.getElementById("input-search");
 
+function celsius(f) {
+    return ((f -32) * 5/9).toFixed(2);
+}
+
+function getName(n) {
+    let name = '';
+
+    for (let i = 0; i < n.length; i++) {
+        if (n[i] === ',') return name;
+        name += n[i];
+    }
+    return name;
+}
+
+class City {
+    constructor(data) {
+        this.name = getName(data.resolvedAddress);
+        this.temp = celsius(data.currentConditions.temp);
+        this.feel =  celsius(data.currentConditions.feelslike);
+        this.conditions = data.currentConditions.conditions;
+        this.sunrise = data.currentConditions.sunrise;
+        this.sunset = data.currentConditions.sunset;
+    }
+    
+    display() {
+        console.log(`Nom: ${this.name}`);
+        console.log(`Température: ${this.temp} ressenti ${this.feel}. ${this.conditions}`)
+        console.log(`Sunrise: ${this.sunrise} - Sunset: ${this.sunset}`);
+    }
+}
+
+// Get datas
 async function getData() {
     if (input.value.length === 0) {
         console.log("Enter a city name");
@@ -14,7 +46,8 @@ async function getData() {
         const location = encodeURIComponent(input.value);
         const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${input.value}?key=${key}`);
         const data = await response.json();
-        console.log(data);
+        const city = new City(data);
+        city.display();
         input.value = "";
     } catch (error) {
         console.log("That city doesn't exist");
