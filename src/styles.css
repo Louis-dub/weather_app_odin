@@ -80,3 +80,12 @@ header h1 {
 .search button:active {
     transform: scale(0.9);
 }
+
+/* Error Message */
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 100px;
+    font-size: 5rem;
+    font-weight: bold;
+}

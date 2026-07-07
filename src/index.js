@@ -2,8 +2,9 @@ import './styles.css'
 import logo from './images/logo_sky_log.png'
 
 const key = "SC4BWVDFLWVH4HLHVLDN8GU3C";
-const btnSearch = document.getElementById("btn-search")
+const form = document.getElementById("form-search")
 const input = document.getElementById("input-search");
+const content = document.getElementById("content");
 
 function celsius(f) {
     return ((f -32) * 5/9).toFixed(2);
@@ -48,16 +49,27 @@ async function getData() {
         const data = await response.json();
         const city = new City(data);
         city.display();
-        input.value = "";
+        content.innerHTML = "";
     } catch (error) {
-        console.log("That city doesn't exist");
+        content.innerHTML = `
+            <h1 class="error"><em>${input.value}</em> isn't a city !</h1>
+        `;
     }
+    input.value = "";
 }
 
-btnSearch.addEventListener("click", getData);
-input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") getData();
-})
+input.addEventListener("invalid", () => {
+    input.setCustomValidity("Enter the name of city !");
+});
+
+input.addEventListener("input", () => {
+    input.setCustomValidity("");
+});
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    getData();
+});
 
 // Add Logo
 document.addEventListener("DOMContentLoaded", () => {
