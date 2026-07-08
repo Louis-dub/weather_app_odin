@@ -6,6 +6,13 @@ const form = document.getElementById("form-search")
 const input = document.getElementById("input-search");
 const content = document.getElementById("content");
 
+const options = {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+};
+
 function celsius(f) {
     return ((f -32) * 5/9).toFixed(2);
 }
@@ -20,20 +27,104 @@ function getName(n) {
     return name;
 }
 
+function getIcon(iconName) {
+    const allString = [
+        "clear-day", "clear-night", "partly-cloudy-day", "partly-cloudy-night", "cloudy", "rain", "showers-day", "showers-night",
+        "thunder-rain", "thunder-showers-day", "thunder-showers-night", "snow", "snow-showers-day", "snow-showers-night",
+        "fog", "wind", "hail"
+    ];
+    const allEmojis = [
+        '☀️', '🌙', '⛅', '☁️', '☁️', '🌧️', '🌦️', '🌧️', '⛈️', '⛈️', '⛈️', '❄️', '🌨️', '🌨️', '🌫️', '💨', '🌨️'
+    ];
+    for (let i = 0; i < allString.length; i++)
+        if (iconName === allString[i]) return allEmojis[i];
+    return '☀️';
+}
+
 class City {
     constructor(data) {
         this.name = getName(data.resolvedAddress);
+        this.date = data.days[0].datetime;
         this.temp = celsius(data.currentConditions.temp);
         this.feel =  celsius(data.currentConditions.feelslike);
         this.conditions = data.currentConditions.conditions;
         this.sunrise = data.currentConditions.sunrise;
         this.sunset = data.currentConditions.sunset;
+        this.humidity = data.currentConditions.humidity;
+        this.windspeed = data.currentConditions.windspeed;
+        this.uvindex = data.currentConditions.uvindex;
+        this.icon = data.currentConditions.icon;
+        this.description = data.description;
+        this.tempmax = celsius(data.days[0].tempmax);
+        this.tempmin = celsius(data.days[0].tempmin);
+
+        this.forecast = data.days.slice(1, 6);
     }
     
     display() {
         console.log(`Nom: ${this.name}`);
         console.log(`Température: ${this.temp} ressenti ${this.feel}. ${this.conditions}`)
         console.log(`Sunrise: ${this.sunrise} - Sunset: ${this.sunset}`);
+        content.innerHTML = `
+            <div class="weather-main">
+                <span class="weather-icon">${getIcon(this.icon)}</span>
+                <p class="weather-temp">${this.temp}°C</p>
+            </div>
+            <div class="weather-secondary">
+                <h1>${this.name}</h1>
+                <p class="weather-date">${new Date(this.date + 'T00:00:00').toLocaleDateString('en-US', options)}</p>
+                <p class="wheater-feel">Feels like ${this.feel}°C</p>
+                <p class="weather-description">${this.conditions}. ${this.description}</p>
+            </div>
+            <div class="weather-stats">
+                <div class="stat-item stat-sunrise">
+                    <span class="stat-icon">🌅</span>
+                    <p class="stat-label">Sunrise</p>
+                    <p class="stat-value">${this.sunrise}</p>
+                </div>
+                <div class="stat-item stat-sunset">
+                    <span class="stat-icon">🌇</span>
+                    <p class="stat-label">Sunset</p>
+                    <p class="stat-value">${this.sunset}</p>
+                </div>
+                <div class="stat-item stat-humidity">
+                    <span class="stat-icon">💧</span>
+                    <p class="stat-label">Humidity</p>
+                    <p class="stat-value">${this.humidity}%</p>
+                </div>
+                <div class="stat-item stat-windspeed">
+                    <span class="stat-icon">💨</span>
+                    <p class="stat-label">Windspeed</p>
+                    <p class="stat-value">${this.windspeed} km/h</p>
+                </div>
+                <div class="stat-item stat-uvindex">
+                    <span class="stat-icon">☀️</span>
+                    <p class="stat-label">UV Index</p>
+                    <p class="stat-value">${this.uvindex}</p>
+                </div>
+                <div class="stat-item stat-tempmax">
+                    <span class="stat-icon">🔺</span>
+                    <p class="stat-label">Max</p>
+                    <p class="stat-value">${this.tempmax}°C</p>
+                </div>
+                <div class="stat-item stat-tempmin">
+                    <span class="stat-icon">🔻</span>
+                    <p class="stat-label">Min</p>
+                    <p class="stat-value">${this.tempmin}°C</p>
+                </div>
+            </div>
+            <div class="weather-forecast">
+                ${this.forecast.map(day => {
+                    return `
+                        <div class="forecast-item">
+                            <p class="forecast-date">${new Date(day.datetime + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short' })}</p>
+                            <span class="forecast-icon">${getIcon(day.icon)}</span>
+                            <p class="forecast-temp">Max: ${celsius(day.tempmax)}°C - Min: ${celsius(day.tempmin)}°C</p>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `
     }
 }
 
@@ -49,7 +140,6 @@ async function getData() {
         const data = await response.json();
         const city = new City(data);
         city.display();
-        content.innerHTML = "";
     } catch (error) {
         content.innerHTML = `
             <h1 class="error"><em>${input.value}</em> isn't a city !</h1>
