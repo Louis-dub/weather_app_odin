@@ -4,6 +4,7 @@ It is an app that provides weather information thanks to an API.
 
 ## Preview
 You can access the website [here](https://louis-dub.github.io/weather_app_odin/).
+
 ![Preview](src/images/screenshot.png)
 
 ## Features
