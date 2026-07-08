@@ -228,3 +228,74 @@ header h1 {
     font-size: 0.85rem;
     margin: 0;
 }
+
+@media (max-width: 600px) {
+    header {
+        padding: 20px;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: center;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    header img {
+        width: 60px;
+    }
+
+    .search input {
+        width: 200px;
+        font-size: 1.2rem;
+    }
+
+    .weather-main {
+        margin-bottom: 0;
+        width: 100px;
+        height: 100px;
+        transform: none;
+    }
+
+    .weather-temp {
+        font-size: 1.3rem;
+    }
+
+    .weather-secondary {
+        padding: 24px 20px;
+        margin-top: 16px;
+    }
+
+    #content h1 {
+        font-size: 2.5rem;
+        margin-top: 0;
+    }
+
+    .weather-stats {
+        gap: 12px;
+    }
+
+    .stat-sunrise, .stat-sunset, .stat-humidity, .stat-windspeed, .stat-uvindex, .stat-tempmax, .stat-tempmin {
+        margin-top: 0;
+    }
+
+    .stat-item {
+        width: 100px;
+        padding: 14px 10px;
+    }
+
+    .weather-forecast {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding: 10px 16px;
+        gap: 16px;
+    }
+
+    .forecast-item {
+        flex-shrink: 0;
+    }
+
+    #content {
+        padding-bottom: 80px;
+    }
+}
